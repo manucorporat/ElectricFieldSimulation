@@ -1,0 +1,6 @@
+//
+// Prefix header for all source files of the 'Test-Sprite' target in the 'Test-Sprite' project
+//
+
+#include "FZPlatformsHeader.h"
+#define FZ_OS kFZPLATFORM_MAC
