@@ -1,5 +1,5 @@
 
-#define MAX_NUMBER_ITEMS 15
+#define MAX_NUMBER_ITEMS 16
 #define BACKGROUND_COLOR vec4(0, 0, 0.2, 1)
 #define ZERO_COLOR vec4(0, 0, 0.5, 1)
 #define POSITIVE_COLOR vec4(0, 1, 0, 1)
@@ -13,11 +13,13 @@
 precision highp float;
 uniform highp vec3 u_data[MAX_NUMBER_ITEMS];
 uniform highp int u_number;
+
 #else
 uniform vec3 u_data[MAX_NUMBER_ITEMS];
 uniform int u_number;
 
 #endif
+
 
 bool isClose(float value, float center, float radius)
 {
@@ -48,48 +50,48 @@ void main()
             float potential = u_data[i].z / dist;
             
             // Compute vector: v * q /(d^3) = v * p / d^2
-            vectorFinal += vector * (potential/(dist*dist));
+            vectorFinal += vector * (potential/dist);
             potentialFinal += potential;
         }
     }
     
-    // normalize final vector
-    float module = length(vectorFinal);
-    vectorFinal /= module;
+    if(isClose(potentialFinal, 0.0, RANGE))
+        // If potential is close to zero: render blue
+        gl_FragColor = ZERO_COLOR;
     
+    else if(isClose(potentialFinal, floor(potentialFinal), RANGE))
+        // If potential is close to the integer part: render white (equipotential line)
+        gl_FragColor = LINE_COLOR;
+    
+    else
+    {
+        potentialFinal /= 10.0;
+        
+        // If the potencial is positive we render in green (mix ~= blending)
+        if(potentialFinal > 0.0)
+            gl_FragColor = mix(BACKGROUND_COLOR, POSITIVE_COLOR, min(potentialFinal, 1.0));
+        
+        // If the potencial is negative we render in green (mix ~= blending)
+        else
+            gl_FragColor = mix(BACKGROUND_COLOR, NEGATIVE_COLOR, min(-potentialFinal, 1.0));
+    }
+    
+    
+    
+    // normalize final vector
     // In order to render the arrows.
     // 1. We move to a relative system : mod(gl_FragCoord.xy, BOX)
     // 2. Get vector from the center of the system to the relative point: p - (BOX/2)
     // 3. Normalize vector
     // 4. Change the sign.
-    vec2 relative = -normalize(mod(gl_FragCoord.xy, BOX) - (BOX/2.0));
-
     // If the dot product of the relative vector and the vector final is close to 1
     // this means that we are in a pixel that is part of an arrow.
-    if(isClose(dot(relative, vectorFinal), 1.0, 0.003) && module > 0.00001)
-        gl_FragColor = VECTOR_COLOR;
-    
-    else
-    {
-        if(isClose(potentialFinal, 0.0, RANGE))
-            // If potential is close to zero: render blue
-            gl_FragColor = ZERO_COLOR;
-        
-        else if(isClose(potentialFinal, floor(potentialFinal), RANGE))
-            // If potential is close to the integer part: render white (equipotential line)
-            gl_FragColor = LINE_COLOR;
-        
-        else
-        {
-            potentialFinal = clamp(potentialFinal / 10.0, -1.0, 1.0);
-            
-            // If the potencial is positive we render in green (mix ~= blending)
-            if(potentialFinal > 0.0)
-                gl_FragColor = mix(BACKGROUND_COLOR, POSITIVE_COLOR, potentialFinal);
-            
-            // If the potencial is negative we render in green (mix ~= blending)
-            else
-                gl_FragColor = mix(BACKGROUND_COLOR, NEGATIVE_COLOR, -potentialFinal);
-        }
+    float module = length(vectorFinal);
+    if(module > 0.2) {
+        vec2 relative = -normalize(mod(gl_FragCoord.xy, BOX) - (BOX/2.0));
+        vectorFinal /= module;
+        if(isClose(dot(relative, vectorFinal), 1.0, 0.006))
+            gl_FragColor = mix(gl_FragColor, VECTOR_COLOR, min(module*0.7, 1.0));
+
     }
 }
