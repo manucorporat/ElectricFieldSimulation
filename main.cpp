@@ -173,7 +173,7 @@ public:
 // APPLICATION'S ENTRY POINT
 int main(int argc, char *argv[])
 {
-    FORZE_INIT(new AppDelegate(), kFZSize_iPadLandscape, argc, argv);
+    FORZE_INIT(new AppDelegate(), kFZSize_Auto, argc, argv);
     return EXIT_SUCCESS;
 }
 
