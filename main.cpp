@@ -3,7 +3,7 @@
 
 using namespace FORZE;
 
-#define NUMBER 15
+#define NUMBER 16
 
 
 class ElectricField : public Layer {
@@ -15,6 +15,7 @@ public:
     ElectricField()
     {
         setTrackedEvents(kFZEventType_Tap);
+        schedule();
         
         // CREATE AUTHOR LABEL
         const char *text =
@@ -42,52 +43,96 @@ public:
         
         addChild(sprite, 100);
         
+        // CREATE A LAYER COLOR
+        // This label will be the opengl polygon where the shader will be applied
+        layerColor_ = new LayerColor(fzWHITE);
+        addChild(layerColor_);
+        
+        try
         {
-            // CREATE A LAYER COLOR
-            // This label will be the opengl polygon where the shader will be applied
-            layerColor_ = new LayerColor(fzWHITE);
-            addChild(layerColor_);
-            
-            
             // LOAD GLSL SHADER
             GLProgram *program = new GLProgram("simulation.vert", "simulation.frag");
             program->addGenericAttributes();
             program->link();
             layerColor_->setGLProgram(program);
+            
+        } catch(std::exception& e) {
+            FZLog("Failed.");
         }
         
         
-        // ITEM
-        MenuItemImage *item = new MenuItemImage("menu_reset.png", this, SEL_PTR(ElectricField::removeLastOne));
-        item->setPosition(30, 20);
-        item->setScale(0.5f);
-        addChild(item, 100);
+        // MENU
+        MenuItem *item1 = new MenuItemLabel("Add +", "helvetica.fnt",
+                                            this, SEL_PTR(ElectricField::dropPositive));
+        MenuItem *item2 = new MenuItemLabel("Add -", "helvetica.fnt",
+                                            this, SEL_PTR(ElectricField::dropNegative));
+        MenuItem *item3 = new MenuItemLabel("Remove", "helvetica.fnt",
+                                            this, SEL_PTR(ElectricField::removeLastOne));
+        MenuItem *item4 = new MenuItemLabel("Condenser", "helvetica.fnt",
+                                            this, SEL_PTR(ElectricField::condenser));
+        MenuItem *item5 = new MenuItemLabel("Circle", "helvetica.fnt",
+                                            this, SEL_PTR(ElectricField::circle));
         
-        
-        // SCHEDULE UPDATE()
-        schedule();
+        Menu *menu = new Menu(item1, item2, item3, item4, item5, NULL);
+        menu->alignChildrenHorizontally(50);
+        menu->setPosition(getContentSize().width/2, 40);
+        addChild(menu);
     }
     
     
-    void removeLastOne(void*sender)
-    {
-        layerColor_->removeChild((Node*)layerColor_->getChildren().back());
-    }
-    
-    
-    void createCharge(const fzPoint& pos)
+    void createChange(const fzPoint& pos, int chargeValue)
     {
         if(layerColor_->getChildren().size() < NUMBER) {
             
-            float chargeValue = 250;
-            if(FZ_RANDOM_0_1() < 0.5)
-                chargeValue = -chargeValue;
-            
-            LayerColor *charge = new LayerColor(fzRED, fzSize(1, 1));
+            Node *charge = new Node();
             charge->setPosition(pos);
             charge->setTag(chargeValue);
             layerColor_->addChild(charge);
         }
+    }
+    
+    
+    void dropPositive(void*)
+    {
+        createChange(fzPoint(40, getContentSize().height/2), 250);
+    }
+    
+    void dropNegative(void*)
+    {
+        createChange(fzPoint(getContentSize().width-40, getContentSize().height/2), -250);
+    }
+    
+    
+    void circle(void*)
+    {
+        layerColor_->removeAllChildren();
+        
+        fzPoint center = getContentSize()/2;
+        for(int i = 0; i < 15; ++i)
+        {
+            float angle = i*M_PI*2/15;
+            fzPoint pos = center + fzPoint(cosf(angle)*250, sinf(angle)*250);
+            createChange(pos, 110);
+        }
+    }
+    
+    
+    void condenser(void*)
+    {
+        layerColor_->removeAllChildren();
+
+        fzPoint center = getContentSize()/2;
+        for(int i = 0; i < 7; ++i)
+            createChange(center + fzPoint(-100, 200-i*70), 250);
+            
+        for(int i = 0; i < 7; ++i)
+            createChange(center + fzPoint(100, 200-i*70), -250);
+    }
+    
+    
+    void removeLastOne(void*)
+    {
+        layerColor_->removeChild((Node*)layerColor_->getChildren().back());
     }
     
     
@@ -126,7 +171,6 @@ public:
                         return true;
                     }
                 }
-                createCharge(event.getPoint());
                 return false;
             }
             default:
