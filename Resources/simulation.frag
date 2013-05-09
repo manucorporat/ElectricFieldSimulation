@@ -1,11 +1,11 @@
 
 #define MAX_NUMBER_ITEMS 16
-#define BACKGROUND_COLOR vec4(0, 0, 0.2, 1)
-#define ZERO_COLOR vec4(0, 0, 0.5, 1)
-#define POSITIVE_COLOR vec4(0, 1, 0, 1)
-#define NEGATIVE_COLOR vec4(1, 0, 0, 1)
-#define VECTOR_COLOR vec4(1, 0.8, 0, 1)
-#define LINE_COLOR vec4(1, 1, 1, 1)
+#define BACKGROUND_COLOR vec3(0, 0, 0.2)
+#define ZERO_COLOR vec3(0, 0, 0.5)
+#define POSITIVE_COLOR vec3(0, 1, 0)
+#define NEGATIVE_COLOR vec3(1, 0, 0)
+#define VECTOR_COLOR vec3(1, 0.8, 0)
+#define LINE_COLOR vec3(1, 1, 1)
 #define BOX vec2(50, 50)
 #define RANGE 0.05
 
@@ -29,11 +29,10 @@ bool isClose(float value, float center, float radius)
 void main()
 {
     // We reset the field vector, zero, zero.
-    vec2 vectorFinal = vec2(0.0);
-    
+    vec2 vectorFinal = vec2(0);
+    vec3 color;
     // We reset the potential, zero.
-    float potentialFinal = 0.0;
-    
+    float value = 0.0;
     // here, we iterate the electric charges stored in u_data where
     // u_data.xy is the position vector.
     // u_data.z is the change value in coulombs.
@@ -44,36 +43,36 @@ void main()
             vec2 vector = gl_FragCoord.xy - u_data[i].xy;
             
             // Vector length -> distance
-            float dist = length(vector);
+            float dist = inversesqrt(vector.x*vector.x+vector.y*vector.y);
             
             // Compute potencial:  q/d
-            float potential = u_data[i].z / dist;
+            float potential = u_data[i].z * dist;
             
             // Compute vector: v * q /(d^3) = v * p / d^2
-            vectorFinal += vector * (potential/dist);
-            potentialFinal += potential;
+            vectorFinal += vector * (potential*dist);
+            value += potential;
         }
     }
     
-    if(isClose(potentialFinal, 0.0, RANGE))
+    if(isClose(value, 0.0, RANGE))
         // If potential is close to zero: render blue
-        gl_FragColor = ZERO_COLOR;
+        color = ZERO_COLOR;
     
-    else if(isClose(potentialFinal, floor(potentialFinal), RANGE))
+    else if(isClose(value, ceil(value), RANGE))
         // If potential is close to the integer part: render white (equipotential line)
-        gl_FragColor = LINE_COLOR;
+        color = LINE_COLOR;
     
     else
     {
-        potentialFinal /= 10.0;
+        value *= 0.1;
         
         // If the potencial is positive we render in green (mix ~= blending)
-        if(potentialFinal > 0.0)
-            gl_FragColor = mix(BACKGROUND_COLOR, POSITIVE_COLOR, min(potentialFinal, 1.0));
+        if(value > 0.0)
+        		color = mix(BACKGROUND_COLOR, POSITIVE_COLOR, min(value, 1.0));
         
         // If the potencial is negative we render in green (mix ~= blending)
         else
-            gl_FragColor = mix(BACKGROUND_COLOR, NEGATIVE_COLOR, min(-potentialFinal, 1.0));
+        		color = mix(BACKGROUND_COLOR, NEGATIVE_COLOR, min(-value, 1.0));
     }
     
     
@@ -86,12 +85,15 @@ void main()
     // 4. Change the sign.
     // If the dot product of the relative vector and the vector final is close to 1
     // this means that we are in a pixel that is part of an arrow.
-    float module = length(vectorFinal);
-    if(module > 0.2) {
-        vec2 relative = -normalize(mod(gl_FragCoord.xy, BOX) - (BOX/2.0));
-        vectorFinal /= module;
+    value = length(vectorFinal);
+    if(value > 0.14) {
+        vec2 relative = -normalize(mod(gl_FragCoord.xy, BOX) - (BOX*0.5));
+        
+        vectorFinal /= value;
         if(isClose(dot(relative, vectorFinal), 1.0, 0.006))
-            gl_FragColor = mix(gl_FragColor, VECTOR_COLOR, min(module*0.7, 1.0));
+            color = mix(color, VECTOR_COLOR, min(value*0.7, 1.0));
 
     }
+    
+    gl_FragColor = vec4(color, 1);
 }

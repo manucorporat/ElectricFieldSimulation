@@ -72,8 +72,10 @@ public:
                                             this, SEL_PTR(ElectricField::condenser));
         MenuItem *item5 = new MenuItemLabel("Circle", "helvetica.fnt",
                                             this, SEL_PTR(ElectricField::circle));
+        MenuItem *item6 = new MenuItemLabel("Box", "helvetica.fnt",
+                                            this, SEL_PTR(ElectricField::box));
         
-        Menu *menu = new Menu(item1, item2, item3, item4, item5, NULL);
+        Menu *menu = new Menu(item1, item2, item3, item4, item5, item6, NULL);
         menu->alignChildrenHorizontally(50);
         menu->setPosition(getContentSize().width/2, 40);
         addChild(menu);
@@ -116,6 +118,26 @@ public:
         }
     }
     
+    void box(void*)
+    {
+        layerColor_->removeAllChildren();
+        
+        float step = 100;
+        float a = step*4 / 2;
+        fzPoint center = getContentSize()/2;
+        for(int i = 0; i < 4; ++i)
+            createChange(center + fzPoint(-a, -a+i*step), 120);
+        
+        for(int i = 0; i < 4; ++i)
+            createChange(center + fzPoint(a, a-i*step), 120);
+        
+        for(int i = 0; i < 4; ++i)
+            createChange(center + fzPoint(-a+i*step, a), 120);
+        
+        for(int i = 0; i < 4; ++i)
+            createChange(center + fzPoint(a-i*step, -a), 120);
+
+    }
     
     void condenser(void*)
     {
@@ -186,6 +208,7 @@ public:
 };
 
 
+
 // APPLICATION DELEGATE
 // A instance of this object will receive the application events
 // through the ApplicationProtocol protocol
@@ -203,6 +226,7 @@ public:
     // this method is called when the application launched.
     void applicationLaunched(void *options)
     {
+        Director::Instance().setDisplayFPS(true);
         ElectricField *layer = new ElectricField();
         
         Scene *scene = new Scene();
@@ -217,6 +241,8 @@ public:
 // APPLICATION'S ENTRY POINT
 int main(int argc, char *argv[])
 {
+
+    
     FORZE_INIT(new AppDelegate(), kFZSize_Auto, argc, argv);
     return EXIT_SUCCESS;
 }
