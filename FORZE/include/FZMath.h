@@ -88,7 +88,7 @@ namespace FORZE {
     
     
     //! Copies a matrix 4x4 efficiently.
-    void fzMath_mat4Copy(const float* m1, float* mat);
+    void fzMath_mat4Copy(const float* src, float* dst);
     
     
     //! Prints a log in the console showing the 4x4 matrix.

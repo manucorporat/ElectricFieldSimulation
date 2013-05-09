@@ -243,6 +243,10 @@ namespace FORZE {
         fzAffineTransform(const float *matrix);
         
         
+        // Assigns a new affine translation giving rotation/scale/translate.
+        void assign(float *data);
+        
+        
         //! Applies a scale factor. X and Y axies.
         fzAffineTransform& scale(float sx, float sy) {
             m[0] *= sx; m[1] *= sx;
@@ -257,22 +261,12 @@ namespace FORZE {
             return scale(s, s);
         }
         
-        
-//        fzAffineTransform& setZ(float z) {
-//            m[14] = z;
-//            return *this;
-//        }
-        
-        // Assigns a new affine translation giving rotation/scale/translate.
-        void assign(float *data);
-        
-        void log() const;
-        
         //! Applies a translation.
         fzAffineTransform& translate(float x, float y, float z);
         fzAffineTransform& translate(float x, float y) {
             return translate(x, y, 0);
         }
+        
         
         //! Applies a rotation given an angle in radians.
         fzAffineTransform& rotate(float radians);
@@ -283,6 +277,7 @@ namespace FORZE {
         //! Returns the inverse transform.
         fzAffineTransform getInverse() const;
         
+        void log() const;
         
         // Operators
         fzAffineTransform operator * (const fzAffineTransform& t) const {
@@ -745,28 +740,6 @@ namespace FORZE {
         }
     };
 
-    
-    //! A 32bits 2D vector
-    typedef _fzVec2<float> fzVec2;
-
-    
-    //! A 32bits 3D vector
-    struct fzVec3
-    {
-        float x;
-        float y;
-        float z;
-    };
-    
-    struct fzVec4
-    {
-        float x;
-        float y;
-        float z;
-        float w;
-    };
-    
-    
     //! A 2D grid size
     struct fzGridSize
     {
@@ -775,18 +748,36 @@ namespace FORZE {
     };
 
     
-    //!	A 2D Quad. 4 * 2 floats
-    struct fzQuad2
+    //! A 32bits 2D vector
+    typedef _fzVec2<float> fzVec2; // 8-bits boundary
+    
+    //! A 32bits 3D vector
+    struct fzVec3
     {
-        fzVec2	tl;
-        fzVec2	tr;
-        fzVec2	bl;
-        fzVec2	br;
+        float x; // 4
+        float y; // 8
+        float z; // 12 (4-bytes boundaries)
     };
     
+    struct fzVec4
+    {
+        float x; // 4
+        float y; // 8
+        float z; // 12
+        float w; // 16 (8-bytes boundaries)
+    };
     
-    //!	A 3D Quad. 4 * 3 floats
-    struct fzQuad3
+    //!	A 2D Quad. 4 * 2 floats = 32bytes
+    struct fzQuad2F
+    {
+        fzVec2 bl;
+        fzVec2 br;
+        fzVec2 tl;
+        fzVec2 tr;
+    };
+    
+    //!	A 3D Quad. 4 * 3 floats = 48bytes
+    struct fzQuad3F
     {
         fzVec3 bl;
         fzVec3 br;
@@ -794,18 +785,42 @@ namespace FORZE {
         fzVec3 tr;
     };
     
+    //!	A 3D Quad. 4 * 4 floats = 64bytes
+    struct fzQuad4F
+    {
+        fzVec4 bl;
+        fzVec4 br;
+        fzVec4 tl;
+        fzVec4 tr;
+    };
     
     
-    //! a Point with a vertex point, a tex coord point and a color 4B
+    struct _fzT2_C4
+    {
+        fzVec2      texCoord; // 16 - 24
+        fzColor4B   color;    // 24 - 28 (28 = 4*7 = 32bits aligned)
+    };
+    
+ 
+    struct fzT2_C4_Quad
+    {
+        _fzT2_C4	bl;
+        _fzT2_C4	br;
+        _fzT2_C4	tl;
+        _fzT2_C4	tr;
+    };
+    
+    
+     //! a Point with a vertex point, a tex coord point and a color 4B
     struct _fzV4_T2_C4
     {
         fzVec4      vertex;   // 0  - 16
         fzVec2      texCoord; // 16 - 24
         fzColor4B   color;    // 24 - 28 (28 = 4*7 = 32bits aligned)
     };
-    
-    
-    //! 4 ccVertex3FTex2FColor4B
+     
+     
+     //! 4 ccVertex3FTex2FColor4B
     struct fzV4_T2_C4_Quad
     {
         _fzV4_T2_C4	bl;
@@ -814,6 +829,24 @@ namespace FORZE {
         _fzV4_T2_C4	tr;
     };
     
+    
+    struct _fzT2_V2
+    {
+        fzVec2 texCoord;
+        fzVec2 vertex;
+    };
+    
+    //! 4 ccVertex3FTex2FColor4B
+    struct _fzT2_V2_Quad
+    {
+        _fzT2_V2 bl;
+        _fzT2_V2 br;
+        _fzT2_V2 tl;
+        _fzT2_V2 tr;
+    };
+    
+    
+/*
     
     //! a Point with a vertex point, a tex coord point and a color 4B
     struct _fzC4_T2_V2
@@ -833,23 +866,7 @@ namespace FORZE {
         _fzC4_T2_V2 tr; // 108
     };
     
-    
-    struct _fzT2_V2
-    {
-        fzVec2 texCoord;
-        fzVec2 vertex;
-    };
-    
-    
-    //! 4 ccVertex3FTex2FColor4B
-    struct _fzT2_V2_Quad
-    {
-        _fzT2_V2 bl;
-        _fzT2_V2 br;
-        _fzT2_V2 tl;
-        _fzT2_V2 tr;
-    };
-    
+    */
     
 }
 #endif

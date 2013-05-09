@@ -31,7 +31,7 @@
  @author Manuel Martínez-Almeida
  */
 
-#include "FZPlatforms.h"
+#include "FZOSW.h"
 
 
 namespace FORZE {

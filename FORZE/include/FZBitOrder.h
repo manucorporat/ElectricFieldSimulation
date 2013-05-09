@@ -36,15 +36,15 @@
 namespace FORZE {
     
     //! Swap between byte order, short types, 16 bits.
-    uint16_t fzBitOrder_int16Swap (uint16_t n);
+    uint16_t fzBitOrder_int16Swap(uint16_t n);
     
     
     //! Swap between byte order, long types, 32 bits.
-    uint32_t fzBitOrder_int32Swap (uint32_t n);
+    uint32_t fzBitOrder_int32Swap(uint32_t n);
     
     
     //! Swap between byte order, long long types, 64bits.
-    uint64_t fzBitOrder_int64Swap (uint64_t n);
+    uint64_t fzBitOrder_int64Swap(uint64_t n);
     
     
     //! Little endian to host, "Short".

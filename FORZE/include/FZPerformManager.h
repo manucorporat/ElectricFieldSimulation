@@ -70,7 +70,7 @@ namespace FORZE {
         performsQueue m_syncPerforms;
         performsQueue m_asyncPerforms;
 
-        void execute(const fzPerform& perform);
+        void execute(const fzPerform& perform) const;
         void schedule(const fzPerform&, bool async);
         
         

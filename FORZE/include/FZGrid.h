@@ -122,21 +122,21 @@ namespace FORZE {
     class GridTiled3D : public GridBase
     {
     protected:
-        fzQuad2		*p_texCoords;
-        fzQuad3		*p_vertices;
-        fzQuad3		*p_originalVertices;
+        fzQuad2F		*p_texCoords;
+        fzQuad3F		*p_vertices;
+        fzQuad3F		*p_originalVertices;
         
     public:
         virtual ~GridTiled3D();
 
         /** returns the tile at the given position */
-        const fzQuad3& getTile(const fzGridSize& pos) const;
+        const fzQuad3F& getTile(const fzGridSize& pos) const;
         
         /** returns the original tile (untransformed) at the given position */
-        const fzQuad3& getOriginalTile(const fzGridSize& pos) const;
+        const fzQuad3F& getOriginalTile(const fzGridSize& pos) const;
 
         /** sets a new tile */
-        void setTile(const fzGridSize& pos, const fzQuad3& newQuad);
+        void setTile(const fzGridSize& pos, const fzQuad3F& newQuad);
         
         // Redefined functions
         virtual void calculateVertexPoints() override;

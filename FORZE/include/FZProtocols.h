@@ -47,7 +47,7 @@ namespace FORZE {
     class AppDelegateProtocol
     {
     public:
-        virtual ~AppDelegateProtocol(){}
+        virtual ~AppDelegateProtocol() {}
         
         //! The Director calls this method for the designated delegate when the application was launched succesfully.
         //! This is the entry point for all the game logic.
@@ -87,6 +87,7 @@ namespace FORZE {
         }
     };
     
+    
     class Protocol
     {
     public:
@@ -117,11 +118,11 @@ namespace FORZE {
             virtual ~Color(){}
             
             //! Sets the color used as filter.
-            //! @see setColor()
+            //! @see getColor()
             virtual void setColor(const fzColor3B&) = 0;
             
             //! Returns the color used as filter.
-            //! @see getColor()
+            //! @see setColor()
             virtual const fzColor3B& getColor() const = 0;
         };
         
@@ -134,13 +135,13 @@ namespace FORZE {
         public:
             virtual ~Texture(){}
             
-            //! Returns the Texture2D associated with the node.
-            //! @see setTexture()
-            virtual Texture2D* getTexture() const = 0;
-            
             //! Sets the Texture2D used by the node.
             //! @see getTexture()
             virtual void setTexture(Texture2D*) = 0;
+            
+            //! Returns the Texture2D associated with the node.
+            //! @see setTexture()
+            virtual Texture2D* getTexture() const = 0;
         };
     };
 }

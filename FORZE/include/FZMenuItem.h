@@ -190,7 +190,7 @@ namespace FORZE {
         
         virtual void selected() override;
         virtual void unselected() override;
-
+        void updateColor();
         
     public:
         //! Constructs a MenuItemImage from a custom sprite.
@@ -200,6 +200,7 @@ namespace FORZE {
         //! Constructs a MenuItemImage from an image filename.
         MenuItemImage(const string& filename, SELProtocol *target, SELECTOR_PTR selector);
         
+        void setSprite(Sprite *sprite);
         
         void setColorNormal(const fzColor3B&);
         void setColorSelected(const fzColor3B&);

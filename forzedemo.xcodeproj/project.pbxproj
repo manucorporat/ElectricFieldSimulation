@@ -99,8 +99,6 @@
 		A9362A7116A9A67900217631 /* FZParticleSystem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FZParticleSystem.h; sourceTree = "<group>"; };
 		A9362A7216A9A67900217631 /* FZParticleSystemQuad.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FZParticleSystemQuad.h; sourceTree = "<group>"; };
 		A9362A7316A9A67900217631 /* FZPerformManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FZPerformManager.h; sourceTree = "<group>"; };
-		A9362A7416A9A67900217631 /* FZPlatforms.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FZPlatforms.h; sourceTree = "<group>"; };
-		A9362A7516A9A67900217631 /* FZPlatformsHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FZPlatformsHeader.h; sourceTree = "<group>"; };
 		A9362A7616A9A67900217631 /* FZPrimitives.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FZPrimitives.h; sourceTree = "<group>"; };
 		A9362A7716A9A67900217631 /* FZProtocols.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FZProtocols.h; sourceTree = "<group>"; };
 		A9362A7816A9A67900217631 /* FZRenderTexture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FZRenderTexture.h; sourceTree = "<group>"; };
@@ -138,6 +136,8 @@
 		A9362AAA16A9ADC700217631 /* logo_forze.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = logo_forze.png; sourceTree = "<group>"; };
 		A9362AAD16A9AF4000217631 /* menu_reset.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = menu_reset.png; sourceTree = "<group>"; };
 		A9362AAE16A9AF4000217631 /* menu_reset@x2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "menu_reset@x2.png"; sourceTree = "<group>"; };
+		A97401BB173B232500FFCE76 /* FZOSW_header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FZOSW_header.h; sourceTree = "<group>"; };
+		A97401BC173B232500FFCE76 /* FZOSW.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FZOSW.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -253,6 +253,8 @@
 		A9362A4216A9A67800217631 /* include */ = {
 			isa = PBXGroup;
 			children = (
+				A97401BB173B232500FFCE76 /* FZOSW_header.h */,
+				A97401BC173B232500FFCE76 /* FZOSW.h */,
 				A9362A4316A9A67800217631 /* FORZE.h */,
 				A9362A4416A9A67800217631 /* FZAction.h */,
 				A9362A4516A9A67800217631 /* FZActionCamera.h */,
@@ -302,8 +304,6 @@
 				A9362A7116A9A67900217631 /* FZParticleSystem.h */,
 				A9362A7216A9A67900217631 /* FZParticleSystemQuad.h */,
 				A9362A7316A9A67900217631 /* FZPerformManager.h */,
-				A9362A7416A9A67900217631 /* FZPlatforms.h */,
-				A9362A7516A9A67900217631 /* FZPlatformsHeader.h */,
 				A9362A7616A9A67900217631 /* FZPrimitives.h */,
 				A9362A7716A9A67900217631 /* FZProtocols.h */,
 				A9362A7816A9A67900217631 /* FZRenderTexture.h */,

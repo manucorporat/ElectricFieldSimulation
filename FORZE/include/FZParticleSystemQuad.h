@@ -34,6 +34,7 @@
 #include "FZParticleSystem.h"
 #include "FZConfig.h"
 #include "FZSpriteFrame.h"
+#include "FZTextureAtlas.h"
 
 
 namespace FORZE {
@@ -41,42 +42,43 @@ namespace FORZE {
     /** ParticleSystemQuad is a subclass of CCParticleSystem
      It includes all the features of ParticleSystem.
      */
-    class ParticleSystemQuad : public ParticleSystem
+    class ParticleSystemQuad : public Node, public Protocol::Texture, public Protocol::Blending
     {
     protected:
-        fzC4_T2_V2_Quad     *p_quads;
+        TextureAtlas m_textureAtlas;
+        ParticleSystemLogic *p_logic;
+        fzBlendFunc m_blendFunc;
         
-        GLuint              m_indicesVBO;
-#if FZ_VBO_STREAMING
-        GLuint				m_quadsVBO;
-#endif
-        
-        // Redefined functions
-        virtual void updateQuadWithParticle(const fzParticle& particle) override;
-        void postStep();
+
+        void initTexCoordsWithRect(fzRect rect);
+        void update(fzFloat);
         
     public:
-        ParticleSystemQuad(fzUInt numberOfParticles, Texture2D *texture);
+        ParticleSystemQuad(ParticleSystemLogic *logic);
+        ParticleSystemQuad(ParticleSystemLogic *logic, Texture2D *texture);
         
         ~ParticleSystemQuad();
         
-        /** initialices the indices for the vertices */
-        void initIndices();
+        ParticleSystemLogic *getLogic() const
+        {
+            return p_logic;
+        }
         
-        /** initilizes the Texture2D with a rectangle measured Points */
-        void initTexCoordsWithRect(fzRect rect);
-        
-        /** Sets a new fzSpriteFrame as particle.
-         WARNING: this method is experimental. Use setTexture:withRect instead.
-         */
+        //! Sets a new fzSpriteFrame as particle.
+        //! @warning this method is experimental. Use setTexture:withRect instead.
         void setDisplayFrame(const fzSpriteFrame& s);
         
-        /** Sets a new Texture2D with a rect. The rect is in Points */
+        
+        //! Sets a new Texture2D with a rect. The rect is in Points.
         void setTexture(Texture2D *texture, const fzRect& rect);
-        void setTexture(Texture2D *texture);
         
         
-        void draw();
+        // Redefined
+        virtual void setTexture(Texture2D *texture) override;
+        virtual Texture2D* getTexture() const override;
+        virtual void setBlendFunc(const fzBlendFunc& b) override;
+        virtual const fzBlendFunc& getBlendFunc() const override;
+        virtual void draw() override;
     };
 }
 #endif

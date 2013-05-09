@@ -30,31 +30,31 @@
  @author Manuel Martínez-Almeida
  */
 
-#include "FZPlatformsHeader.h"
+#include "FZOSW_header.h"
 
 #ifndef FZ_OS
 
 //#warning FORZE: The operative system was not specified.
-//#warning You must define FZ_OS. See FZPlatformsHeader.h
+//#warning You must define FZ_OS. See FZOSW_header.h
 
-#define FZ_OS kFZPLATFORM_MODEL
+#define FZ_OS kFZ_OS_MODEL
 #endif
 
 #include "FZTypes.h"
 
-#if (FZ_OS == kFZPLATFORM_IOS_GL_1)
+#if (FZ_OS == kFZ_OS_IOS_GL1)
 #include "Wrappers/iOSGL1_support.h"
 
-#elif (FZ_OS == kFZPLATFORM_IOS_GL_2)
+#elif (FZ_OS == kFZ_OS_IOS_GL2)
 #include "Wrappers/iOSGL2_support.h"
 
-#elif (FZ_OS == kFZPLATFORM_MAC)
+#elif (FZ_OS == kFZ_OS_MAC)
 #include "Wrappers/macosx_support.h"
 
-#elif (FZ_OS == kFZPLATFORM_PSVITA)
+#elif (FZ_OS == kFZ_OS_PSVITA)
 #include "Wrappers/psvita_support.h"
 
-#elif (FZ_OS == kFZPLATFORM_MODEL)
+#elif (FZ_OS == kFZ_OS_MODEL)
 #include "Wrappers/model_support.h"
 
 #else

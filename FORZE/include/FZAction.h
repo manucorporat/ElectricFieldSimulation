@@ -51,6 +51,14 @@ namespace FORZE {
         void *p_target;
         fzInt m_tag;
         
+        // Constructor
+        Action();
+        
+    public:
+        
+        //! Called before the action start. It will also set the target.
+        virtual void startWithTarget(void* target);
+        
         
         //! Called once per frame.
         //! @param time a value between 0 and 1.
@@ -60,14 +68,6 @@ namespace FORZE {
         //! - 1 means that the action is over
         //! @warning this method never should be called manually.
         virtual void update(fzFloat time) {};
-        
-        // Constructor
-        Action();
-        
-    public:
-        
-        //! Called before the action start. It will also set the target.
-        virtual void startWithTarget(void* target);
         
         
         //! Called every frame with it's delta time. DON'T override unless you know what you are doing.

@@ -31,7 +31,7 @@
  */
 
 
-#if defined(FZ_OS) && (FZ_OS == kFZPLATFORM_MAC)
+#if defined(FZ_OS) && (FZ_OS == kFZ_OS_MAC)
 
 // Import OSX base headers
 #import <AppKit/AppKit.h>

@@ -30,7 +30,7 @@
  @author Manuel Martínez-Almeida
  */
 
-#if !defined(FZ_OS) || (FZ_OS == kFZPLATFORM_MODEL)
+#if !defined(FZ_OS) || (FZ_OS == kFZ_OS_MODEL)
 
 #include "GLAPI/gl.h"
 #include "GLAPI/glext.h"

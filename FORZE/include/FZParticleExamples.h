@@ -35,13 +35,11 @@
 
 
 namespace FORZE {
-
-    //! A fire particle system.
-    class ParticleFire : public ParticleSystemQuad
+    
+    class ParticleFireQuad : public ParticleSystemQuad
     {
     public:
-        explicit ParticleFire();
-        
+        explicit ParticleFireQuad();
     };
 }
 

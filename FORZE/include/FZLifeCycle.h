@@ -75,7 +75,7 @@ namespace FORZE {
         
         
         //! Reduces the retain count by 1.
-        //! If the retain count is less or equal to 0, the object is released from memory (deleted).
+        //! If the retain count is less or equal to 0, the object is released from memory (dealloced).
         void release() {
             --m_retains;
             if(m_retains <= 0)
@@ -83,8 +83,8 @@ namespace FORZE {
         }
         
 #if FZ_AUTORELEASE
-        //! Autorelease calls release() when just before finish the runloop.
-        //! autorelease() is a like scheduling a call to release() when all tasks finished.
+        //! Autorelease calls release() when just after finish the runloop.
+        //! autorelease() is a like scheduling a call to release() when all tasks finish.
         void* autorelease() {
             PerformManager::Instance().perform(this, SEL_VOID(LifeCycle::release), false);
             return this;

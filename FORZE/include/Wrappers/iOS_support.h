@@ -31,7 +31,7 @@
  */
 
 
-#if defined(FZ_OS) && (FZ_OS == kFZPLATFORM_IOS_GL_1 || FZ_OS == kFZPLATFORM_IOS_GL_2)
+#if defined(FZ_OS) && (FZ_OS == kFZ_OS_IOS_GL1 || FZ_OS == kFZ_OS_IOS_GL2)
 
 // Import basic iOS headers
 #import <Availability.h>

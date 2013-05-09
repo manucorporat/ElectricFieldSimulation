@@ -81,7 +81,7 @@ namespace FORZE {
         
         
         //! Returns and loads if needed a Font instance giving the filename.
-        Font* addFont(const char* filename, fzFloat lineHeight);
+        Font* addFont(const char* filename, fzFloat lineHeight = 0);
         
         
         //! Removes a Font from the cache given the font instance.

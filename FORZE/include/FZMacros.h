@@ -33,7 +33,7 @@
 
 #include <assert.h>
 
-#include "FZPlatforms.h"
+#include "FZOSW.h"
 #include "FZConfig.h"
 #include "FZCommon.h"
 
