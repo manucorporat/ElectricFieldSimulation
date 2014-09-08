@@ -82,9 +82,9 @@ void main()
     // 1. We move to a relative system : mod(gl_FragCoord.xy, BOX)
     // 2. Get vector from the center of the system to the relative point: p - (BOX/2)
     // 3. Normalize vector
-    // 4. Change the sign.
-    // If the dot product of the relative vector and the vector final is close to 1
-    // this means that we are in a pixel that is part of an arrow.
+    // 4. Change the sign, flip the arrow
+    // If the dot product between the vector calculated and the vector of the electric field  is close to 1
+    // this means that the pixel is part of the arrow, we draw it with a different color (VECTOR_COLOR).
     value = length(vectorFinal);
     if(value > 0.14) {
         vec2 relative = -normalize(mod(gl_FragCoord.xy, BOX) - (BOX*0.5));
