@@ -68,11 +68,11 @@ void main()
         
         // If the potencial is positive we render in green (mix ~= blending)
         if(value > 0.0)
-        		color = mix(BACKGROUND_COLOR, POSITIVE_COLOR, min(value, 1.0));
+            color = mix(BACKGROUND_COLOR, POSITIVE_COLOR, min(value, 0.9)+0.1);
         
         // If the potencial is negative we render in green (mix ~= blending)
         else
-        		color = mix(BACKGROUND_COLOR, NEGATIVE_COLOR, min(-value, 1.0));
+            color = mix(BACKGROUND_COLOR, NEGATIVE_COLOR, min(-value, 0.9)+0.1);
     }
     
     
